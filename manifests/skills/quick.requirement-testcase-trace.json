@@ -1,0 +1,11 @@
+{
+  "name": "quick.requirement-testcase-trace",
+  "type": "skill",
+  "version": "1.1.0",
+  "description": "基于需求拆解输出需求追溯测试用例至 docs/testcase/",
+  "sourceDir": "incremental-project-skills/quick-requirement-testcase-trace",
+  "entry": "SKILL.md",
+  "applicableTemplates": ["Vue3Admin", "Vue3Mobile", "ReactAdmin", "ReactMobile", "Component", "Electron"],
+  "inputs": ["requirements_doc", "solution_doc"],
+  "outputs": ["docs/testcase/{product}-testcases-v{version}.md"]
+}

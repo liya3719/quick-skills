@@ -1,0 +1,99 @@
+{
+  "version": "1.0.0",
+  "repository": "https://github.com/liya3719/quick-skills",
+  "platforms": ["cursor", "claude", "agents"],
+  "defaultScope": "project",
+  "presets": {
+    "ai-coding-full-flow": {
+      "description": "AI Coding 全流程：需求拆解 → 技术方案 → 编码 → 测试用例 → 架构安全审查",
+      "skills": [
+        "quick.requirement-decomposition",
+        "quick.tech-solution",
+        "quick.req-driven-codegen",
+        "quick.requirement-testcase-trace",
+        "quick.arch-security-code-review"
+      ],
+      "flows": ["quick.vue-ai-full-flow", "quick.ai-full-flow"],
+      "docs": [
+        {
+          "source": "WORKFLOW.md",
+          "target": "docs/WORKFLOW.md"
+        },
+        {
+          "source": "docs/ai/README.md",
+          "target": "docs/ai/README.md"
+        },
+        {
+          "source": "incremental-project-skills/README.md",
+          "target": "docs/ai/skills-overview.md"
+        }
+      ],
+      "directories": [
+        "docs/prd/_snapshots",
+        "docs/prd",
+        "docs/design",
+        "docs/testcase",
+        "docs/ai",
+        ".ai"
+      ]
+    }
+  },
+  "skills": {
+    "quick.requirement-decomposition": {
+      "sourceDir": "incremental-project-skills/quick-requirement-decomposition",
+      "dirNameByPlatform": {
+        "cursor": "quick-requirement-decomposition",
+        "claude": "quick-requirement-decomposition",
+        "agents": "quick-requirement-decomposition"
+      }
+    },
+    "quick.tech-solution": {
+      "sourceDir": "incremental-project-skills/quick-tech-solution",
+      "dirNameByPlatform": {
+        "cursor": "quick-tech-solution",
+        "claude": "quick-tech-solution",
+        "agents": "quick-tech-solution"
+      }
+    },
+    "quick.req-driven-codegen": {
+      "sourceDir": "incremental-project-skills/quick-req-driven-codegen",
+      "dirNameByPlatform": {
+        "cursor": "quick-req-driven-codegen",
+        "claude": "quick-req-driven-codegen",
+        "agents": "quick-req-driven-codegen"
+      }
+    },
+    "quick.requirement-testcase-trace": {
+      "sourceDir": "incremental-project-skills/quick-requirement-testcase-trace",
+      "dirNameByPlatform": {
+        "cursor": "quick-requirement-testcase-trace",
+        "claude": "quick-requirement-testcase-trace",
+        "agents": "quick-requirement-testcase-trace"
+      }
+    },
+    "quick.arch-security-code-review": {
+      "sourceDir": "incremental-project-skills/quick-arch-security-code-review",
+      "dirNameByPlatform": {
+        "cursor": "quick-arch-security-code-review",
+        "claude": "quick-arch-security-code-review",
+        "agents": "quick-arch-security-code-review"
+      }
+    },
+    "quick.refactor-module": {
+      "sourceDir": "stock-project-governance/refactor-module",
+      "dirNameByPlatform": {
+        "cursor": "refactor-module",
+        "claude": "refactor-module",
+        "agents": "refactor-module"
+      }
+    },
+    "quick.refactor-feature-addition": {
+      "sourceDir": "stock-project-governance/refactor-feature-addition",
+      "dirNameByPlatform": {
+        "cursor": "refactor-feature-addition",
+        "claude": "refactor-feature-addition",
+        "agents": "refactor-feature-addition"
+      }
+    }
+  }
+}

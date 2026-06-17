@@ -11,7 +11,7 @@
 | 📋 需求 | [`quick-requirement-decomposition`](./quick-requirement-decomposition/SKILL.md) | 产品需求拆解 | 将 PRD 拆解为带 REQ-xxx 编号的原子需求，输出大模型 / 研发 / QA 三视图与追溯矩阵 |
 | 📐 设计 | [`quick-tech-solution`](./quick-tech-solution/SKILL.md) | 研发技术方案 | 基于拆解稿输出可实施、可回溯的技术方案；支持子方案拆分、版本管理与附录追溯 |
 | 💻 实现 | [`quick-req-driven-codegen`](./quick-req-driven-codegen/SKILL.md) | REQ 驱动代码生成 | 以 PRD + 技术方案 + design token JSON 为真源驱动编码，禁止发明产品逻辑 |
-| 🧪 测试 | [`quick-requirement-testcase-trace`](./quick-requirement-testcase-trace/SKILL.md) | 需求追溯测试用例 | 生成功能 / 异常 / 边界三层用例，每条 TC 追溯到 REQ-xxx，维护需求—用例矩阵 |
+| 🧪 测试 | [`quick-requirement-testcase-trace`](./quick-requirement-testcase-trace/SKILL.md) | 需求追溯测试用例 | 生成功能 / 异常 / 边界三层用例，输出至 **`docs/testcase/`**，每条 TC 追溯到 REQ-xxx |
 | 🔍 审查 | [`quick-arch-security-code-review`](./quick-arch-security-code-review/SKILL.md) | 架构与安全代码审查 | 覆盖 SOLID、XSS/CORS/SQLi、鉴权越权、死代码、性能热路径的深度 Code Review |
 
 ---
@@ -46,6 +46,26 @@ quick-arch-security-code-review   ← PR / 合并前，对产出代码做架构�
 2. **禁止覆盖** — PRD 变更或方案升版时，须新建版本文件，旧版保留可查
 3. **禁止静默删除** — 未经用户明确确认，不得删除代码或旧文件
 4. **追溯优先** — 需求 → 方案 → 代码 → 用例，全链路可回溯
+
+---
+
+## CLI Manifest 集成
+
+Skill 本体目录只需 `SKILL.md`（及可选 `references/`）。与 quick-cli 集成时，在仓库根 [`manifests/skills/`](../manifests/skills/) 增加同名 manifest，并在 [`install-targets.json`](../install-targets.json) 登记 `sourceDir`。
+
+- manifest 与 `SKILL.md` **分目录存放**，安装进项目时不会复制 manifest
+- `name` 使用 `quick.<skill-name>` 命名空间
+- `sourceDir` 指向本目录下的 skill 子目录
+- `entry` 通常为 `SKILL.md`
+- `inputs` 声明上游产物别名，例如 `prd`、`requirements_doc`、`solution_doc`
+- `outputs` 声明真实产物文件路径，例如 `docs/ai/codegen/codegen-plan.v1.md`
+
+全流程编排定义在仓库根目录的 `flows/*/flow.json`：
+
+- `quick.vue-ai-full-flow`：Vue 模板默认流程
+- `quick.ai-full-flow`：通用模板流程
+
+注意：`flow.json` 的步骤 `outputs` 使用逻辑别名，不直接写文件路径；CLI 需要再映射到各 skill 的真实产物。
 
 ---
 

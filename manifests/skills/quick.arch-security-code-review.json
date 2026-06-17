@@ -1,0 +1,11 @@
+{
+  "name": "quick.arch-security-code-review",
+  "type": "skill",
+  "version": "1.0.0",
+  "description": "基于代码与方案输出架构安全审查报告",
+  "sourceDir": "incremental-project-skills/quick-arch-security-code-review",
+  "entry": "SKILL.md",
+  "applicableTemplates": ["Vue3Admin", "Vue3Mobile", "ReactAdmin", "ReactMobile", "Component", "Electron"],
+  "inputs": ["solution_doc", "codegen_doc"],
+  "outputs": ["docs/ai/review/review.v1.md"]
+}

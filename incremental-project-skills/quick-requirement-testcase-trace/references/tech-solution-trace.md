@@ -1,6 +1,6 @@
 # 技术方案、子方案与子任务（测试侧如何衔接）
 
-加载时机：项目已按 **总方案 + 附录 F 子方案索引** 或 **子任务拆分**（见 `req-tech-design-codegen` 的 `references/architecture-and-task-split.md`）落地时；需要把用例与**研发任务包、回归范围、并行测试**对齐时通读本节。
+加载时机：项目已按 **总方案 + 附录 F 子方案索引** 或 **子任务拆分**（见 `quick-req-driven-codegen` 的 `references/architecture-and-task-split.md`）落地时；需要把用例与**研发任务包、回归范围、并行测试**对齐时通读本节。
 
 ## 与 REQ 的关系（不可颠倒）
 

@@ -1,0 +1,11 @@
+{
+  "name": "quick.refactor-module",
+  "type": "skill",
+  "version": "1.0.0",
+  "description": "独立/链路模块等价重构：行为等价、v1/vn 并存、五文档确认前禁止写代码",
+  "sourceDir": "stock-project-governance/refactor-module",
+  "entry": "SKILL.md",
+  "applicableTemplates": ["Vue3Admin", "Vue3Mobile", "ReactAdmin", "ReactMobile", "Component", "Electron", "Nest"],
+  "inputs": ["module_context", "refactor_goal"],
+  "outputs": ["refactor/{module}/{vn}/重构报告.md"]
+}

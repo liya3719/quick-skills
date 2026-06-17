@@ -1,0 +1,11 @@
+{
+  "name": "quick.tech-solution",
+  "type": "skill",
+  "version": "1.0.0",
+  "description": "基于需求拆解稿输出可实施技术方案",
+  "sourceDir": "incremental-project-skills/quick-tech-solution",
+  "entry": "SKILL.md",
+  "applicableTemplates": ["Vue3Admin", "Vue3Mobile", "ReactAdmin", "ReactMobile", "Component", "Electron"],
+  "inputs": ["requirements_doc"],
+  "outputs": ["docs/ai/solution/tech-solution.v1.md"]
+}

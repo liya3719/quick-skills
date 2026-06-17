@@ -1,0 +1,11 @@
+{
+  "name": "quick.requirement-decomposition",
+  "type": "skill",
+  "version": "1.0.0",
+  "description": "基于 PRD 输出 REQ-xxx 拆解稿",
+  "sourceDir": "incremental-project-skills/quick-requirement-decomposition",
+  "entry": "SKILL.md",
+  "applicableTemplates": ["Vue3Admin", "Vue3Mobile", "ReactAdmin", "ReactMobile", "Component", "Electron"],
+  "inputs": ["prd"],
+  "outputs": ["docs/ai/requirements/requirements.v1.md"]
+}

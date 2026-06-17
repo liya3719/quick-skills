@@ -1,0 +1,15 @@
+{
+  "name": "quick.vue-ai-full-flow",
+  "type": "flow",
+  "version": "1.0.0",
+  "description": "Vue 模板默认 AI Coding 全流程",
+  "default": true,
+  "applicableTemplates": ["Vue3Admin", "Vue3Mobile"],
+  "steps": [
+    { "id": "requirement-decomposition", "skill": "quick.requirement-decomposition", "outputs": ["requirements_doc"] },
+    { "id": "tech-solution", "skill": "quick.tech-solution", "requires": ["requirement-decomposition"], "outputs": ["solution_doc"] },
+    { "id": "req-driven-codegen", "skill": "quick.req-driven-codegen", "requires": ["tech-solution"], "outputs": ["codegen_doc"] },
+    { "id": "requirement-testcase-trace", "skill": "quick.requirement-testcase-trace", "requires": ["tech-solution"], "optional": true, "outputs": ["testcase_doc"] },
+    { "id": "arch-security-code-review", "skill": "quick.arch-security-code-review", "requires": ["req-driven-codegen"], "outputs": ["review_doc"] }
+  ]
+}

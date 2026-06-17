@@ -32,6 +32,8 @@ stock-project-governance/
         └── 影响范围模板.md
 ```
 
+CLI 注册 manifest 见 [`manifests/skills/`](../manifests/skills/)（不随 skill 安装进项目）。
+
 ## Skill 1：`refactor-module`
 
 ### 适用场景
