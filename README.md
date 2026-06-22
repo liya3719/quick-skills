@@ -33,7 +33,7 @@ quick-skills/
 | 模式 | 你需要什么 | 说明 |
 |------|-----------|------|
 | **可插拔 Skill** | 任意 `*/SKILL.md` 目录 | 复制到 `.cursor/skills` 或 `.claude/skills`，在 IDE 中直接触发，无需 quick-cli |
-| **quick-cli 绑定** | 上表 + `manifests/` + `flows/` + `install-targets.json` | `quick init` / `quick skill:install` 安装 preset，`quick ai:start` 跑全流程 |
+| **quick-cli 绑定** | `install-targets.json` + `WORKFLOW.md` | `quick init` / `quick skill:install` 安装 skill 与 `docs/WORKFLOW.md`，在 IDE 中手动执行 |
 
 Skill 目录内 **不再放置** `skill.json`；CLI 元数据集中在 `manifests/skills/`，避免 Skill 本体看起来像 quick-cli 子模块。
 
@@ -48,7 +48,7 @@ incremental-project-skills/
 └── quick-arch-security-code-review/    # 架构与安全代码审查
 
 stock-project-governance/
-├── refactor-module/                    # 独立 / 链路模块重构
+├── module-refactor/                    # 独立 / 链路模块等价重构
 └── refactor-feature-addition/          # 存量模块新增功能
 
 docs/                                   # 项目文档示例（PRD、方案、测试用例）
@@ -97,28 +97,16 @@ PRD / 产品输入
 
 远程仓库：**[https://github.com/liya3719/quick-skills](https://github.com/liya3719/quick-skills)**
 
-为支持 quick-cli 发现和安装 skill，本仓库在 **编排层**（与 Skill 本体分离）提供：
+为支持 quick-cli 安装 skill，本仓库提供：
 
-| 文件 / 目录 | 作用 | 是否随 skill 安装进项目 |
-|------------|------|------------------------|
-| `manifests/skills/*.json` | 单个 skill 的 CLI 注册信息（入口、输入输出、适用模板） | 否 |
-| `flows/*/flow.json` | 多 skill 编排顺序与产物别名 | 复制到项目 `.ai/flows/` |
-| `install-targets.json` | 多平台安装映射与 `ai-coding-full-flow` preset | 否（仅 CLI 读取） |
+| 文件 / 目录 | 作用 | 是否安装进项目 |
+|------------|------|----------------|
+| `install-targets.json` | 多平台安装映射与 `ai-coding-full-flow` preset | 否（CLI 读取） |
+| `WORKFLOW.md` | 流水线与首次使用说明 | 是 → `docs/WORKFLOW.md` |
+| `manifests/skills/*.json` | 维护者用 skill 元数据（`skill:list` 可选） | 否 |
+| `flows/` | 维护者参考的流程编排文档 | 否 |
 
-详见 [`manifests/README.md`](./manifests/README.md)。
-
-- `manifests/skills/*.json`：`sourceDir` 指向 Skill 本体目录，`entry` 通常为 `SKILL.md`
-- `flow.json`：步骤 `outputs` 为编排层别名；真实路径见各 skill manifest 的 `outputs`
-- `install-targets.json`：声明 `.cursor/skills`、`.claude/skills` 等平台目录名
-
-### Flow 列表
-
-| Flow ID | 适用场景 | 默认 |
-|---------|---------|------|
-| `quick.vue-ai-full-flow` | Vue3Admin / Vue3Mobile 增量全流程 | 是（Vue 模板） |
-| `quick.ai-full-flow` | 通用增量全流程 | 否 |
-| `quick.refactor-module-flow` | 存量模块重构 | 否 |
-| `quick.refactor-feature-flow` | 存量模块新增功能 | 否 |
+用户主路径：**Skill 本体 + docs/WORKFLOW.md**，无需 flow 编排命令。
 
 ### Skill 注册范围
 
@@ -127,10 +115,10 @@ PRD / 产品输入
 
 ### init 安装 preset
 
-`quick init` 选「是」加载 AI Coding 全流程时，CLI 按 `install-targets.json` 中 `presets.ai-coding-full-flow` 安装：
+`quick init` 选「是」安装 AI skill 时，CLI 按 `install-targets.json` 中 `presets.ai-coding-full-flow` 安装：
 
 - 5 个增量 skill → `.cursor/skills/` + `.claude/skills/`
-- 说明文档 → `docs/WORKFLOW.md`、`docs/ai/README.md`、`docs/ai/skills-overview.md`
+- 使用说明 → `docs/WORKFLOW.md`
 
 产物约定：
 - `manifests/skills/*.json` 的 `outputs` 写真实产物文件路径，例如 `docs/ai/requirements/requirements.v1.md`
@@ -145,8 +133,8 @@ PRD / 产品输入
 
 | 场景 | Skill | 适用 | 核心约束 | 主要产出 |
 |------|-------|------|---------|---------|
-| 🛠 重构 | [`refactor-module`](./stock-project-governance/refactor-module/SKILL.md) | 独立模块重构、链路模块重构、legacy 治理、需要快速回滚的 vn 重构 | 行为等价、禁止原地重写、`v1 / vn` 并存、三件套确认前禁止写代码 | 现状与风险、调用关系图、技术方案、重构计划、测试用例、重构报告 |
-| ➕ 新增 | [`refactor-feature-addition`](./stock-project-governance/refactor-feature-addition/SKILL.md) | 在存量 / legacy 模块上新增或扩展功能 | 最小改动、禁止顺手改无关代码、先做影响范围分析、双文档确认前禁止写代码 | 技术方案、测试用例、必要时补充影响范围说明 |
+| 🛠 重构 | [`module-refactor`](./stock-project-governance/module-refactor/SKILL.md) | 独立模块重构、链路模块重构、legacy 治理、旁路实现与快速回滚 | 行为等价、禁止原地重写、三文档 + 双确认门前禁止写代码 | 技术方案、重构计划、测试用例（研发+QA）、验证报告、QA 回归评估、重构报告 |
+| ➕ 新增 | [`refactor-feature-addition`](./stock-project-governance/refactor-feature-addition/SKILL.md) | 在存量 / legacy 模块上新增或扩展功能 | 最小改动、三向追溯互验、研发确认前禁止写代码 | 需求拆解、技术方案、实施计划、测试用例（研发+QA）、验证报告 |
 
 ### 协作流程
 
@@ -159,21 +147,21 @@ understand-anything / /understand    ← 先做代码理解，明确职责、契
       ├──────────────────────────────┐
       ▼                              ▼
     重构场景                      新增场景
-(refactor-module)         (refactor-feature-addition)
+(module-refactor)           (refactor-feature-addition)
       │                              │
       ▼                              ▼
-现状/调用图/方案/计划/用例        技术方案 + 测试用例 + 影响范围
+方案/计划/双视角用例            拆解/方案/计划/双视角用例
       │                              │
       └──────────── 用户确认 ────────┘
                      │
                      ▼
-            实施编码（v1/vn 并存 或 最小改动）
+            实施编码（旁路实现 或 最小改动）
                      │
                      ▼
-            全量测试 + 三方一致性校对（代码 / 方案 / 用例）
+            单测全绿 + 回归 + 反漂移校对
                      │
                      ▼
-            归档（重构报告 / 回归记录）
+            归档（重构报告 / 验证报告）
 ```
 
 > 详见 [`stock-project-governance/README.md`](./stock-project-governance/README.md)

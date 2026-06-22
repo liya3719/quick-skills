@@ -13,19 +13,10 @@
         "quick.requirement-testcase-trace",
         "quick.arch-security-code-review"
       ],
-      "flows": ["quick.vue-ai-full-flow", "quick.ai-full-flow"],
       "docs": [
         {
           "source": "WORKFLOW.md",
           "target": "docs/WORKFLOW.md"
-        },
-        {
-          "source": "docs/ai/README.md",
-          "target": "docs/ai/README.md"
-        },
-        {
-          "source": "incremental-project-skills/README.md",
-          "target": "docs/ai/skills-overview.md"
         }
       ],
       "directories": [
@@ -33,8 +24,7 @@
         "docs/prd",
         "docs/design",
         "docs/testcase",
-        "docs/ai",
-        ".ai"
+        "docs/ai"
       ]
     }
   },
@@ -79,12 +69,12 @@
         "agents": "quick-arch-security-code-review"
       }
     },
-    "quick.refactor-module": {
-      "sourceDir": "stock-project-governance/refactor-module",
+    "quick.module-refactor": {
+      "sourceDir": "stock-project-governance/module-refactor",
       "dirNameByPlatform": {
-        "cursor": "refactor-module",
-        "claude": "refactor-module",
-        "agents": "refactor-module"
+        "cursor": "module-refactor",
+        "claude": "module-refactor",
+        "agents": "module-refactor"
       }
     },
     "quick.refactor-feature-addition": {

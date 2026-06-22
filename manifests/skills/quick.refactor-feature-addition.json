@@ -1,11 +1,17 @@
 {
   "name": "quick.refactor-feature-addition",
   "type": "skill",
-  "version": "1.0.0",
-  "description": "存量模块新增功能：最小改动、双文档确认前禁止写代码",
+  "version": "2.0.0",
+  "description": "存量模块新增功能：understand-anything 理解、REQ 拆解、三件套互验、研发确认后最小改动实现",
   "sourceDir": "stock-project-governance/refactor-feature-addition",
   "entry": "SKILL.md",
   "applicableTemplates": ["Vue3Admin", "Vue3Mobile", "ReactAdmin", "ReactMobile", "Component", "Electron", "Nest"],
   "inputs": ["module_context", "feature_requirement"],
-  "outputs": ["refactor/{module}/feature-{name}/测试用例.md"]
+  "outputs": [
+    "feature/{module}/{version}/需求拆解.md",
+    "feature/{module}/{version}/技术方案.md",
+    "feature/{module}/{version}/实施计划.md",
+    "feature/{module}/{version}/测试用例.md",
+    "feature/{module}/{version}/验证报告.md"
+  ]
 }

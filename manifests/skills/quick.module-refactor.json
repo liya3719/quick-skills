@@ -1,0 +1,18 @@
+{
+  "name": "quick.module-refactor",
+  "type": "skill",
+  "version": "2.0.0",
+  "description": "模块等价重构：understand-anything 理解、双视角用例、旁路实现、反漂移与重构报告",
+  "sourceDir": "stock-project-governance/module-refactor",
+  "entry": "SKILL.md",
+  "applicableTemplates": ["Vue3Admin", "Vue3Mobile", "ReactAdmin", "ReactMobile", "Component", "Electron", "Nest"],
+  "inputs": ["module_context", "refactor_goal"],
+  "outputs": [
+    "refactor/{module}/{version}/技术方案.md",
+    "refactor/{module}/{version}/重构计划.md",
+    "refactor/{module}/{version}/测试用例.md",
+    "refactor/{module}/{version}/验证报告.md",
+    "refactor/{module}/{version}/QA回归影响评估.md",
+    "refactor/{module}/{version}/重构报告.md"
+  ]
+}
