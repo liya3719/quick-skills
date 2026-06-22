@@ -60,4 +60,18 @@
 
 ## 与拆解 skill 的配合
 
-若团队使用 `quick-requirement-decomposition`：REQ 编号应与拆解稿一致；需求变更时拆解稿亦应**升版而非覆盖**，用例新版本引用**拆解新版本**的 REQ 基线。
+若团队使用 `quick-requirement-decomposition`：REQ 编号应与拆解稿一致；需求变更时拆解稿亦应**升版而非覆盖**，用例新版本引用**拆解新版本**的 REQ 基线与 **§9.2 变更清单**。
+
+## 与方案确认门（BLOCKING）
+
+**用例升版前**须满足：
+
+1. 关联技术方案为**新版本**（非覆盖旧文件）。
+2. 方案文档头含 **「研发确认：日期 / 确认人 / 方案版本」**（由 `quick-tech-solution` Step 5 写入）。
+3. 无确认记录时：可起草 TC 清单，**不得**将 `docs/testcase/` 新文件标为终稿。
+
+用例变更对照区的「涉及 REQ 变更」须与拆解 §9.2、方案附录 D **一致**。
+
+## 三向互验
+
+用例交付后：更新拆解 §11 / 方案附录 G 的 TC 列；执行 `quick-requirement-decomposition/references/three-way-traceability.md` 互验规则。

@@ -55,7 +55,50 @@ PRD / 产品输入
 
 **依赖关系**：阶段 2 依赖阶段 1 的稳定 REQ；阶段 3 依赖阶段 1 + 2；阶段 4 依赖阶段 1（可与 3 并行）；阶段 5 依赖阶段 3 的代码交付。
 
+**PRD 变更时**：须先完成增量拆解（新建 `docs/prd/` 版本），再升版方案与用例；不可跳过 diff 直接改旧文件。见下文 §「PRD 变更后的增量拆解」。
+
 ---
+
+## 2.1 PRD 变更后的增量拆解
+
+适用：产品定稿变更、验收口径调整、范围增删——**已有** `_snapshots` 快照与上一版拆解 / 方案 / 用例时。
+
+### 原则
+
+1. **快照只追加**：新 PRD 先存 `docs/prd/_snapshots/{需求名}-prd-v{N}-{日期}.md`，**不覆盖**旧快照。
+2. **拆解对照 diff**：新拆解**新建** `docs/prd/{需求名}-v{x.y}.md`，在 §9 写 PRD diff 摘要与 **§9.2 REQ 级变更**（新增 / 修改 / 废弃）。
+3. **方案对齐 §9.2**：新建 `docs/design/` 方案版本，**附录 D** 与拆解 §9.2 **REQ 列表一致**；未变模块可写「同 v1.0 §x.y」。
+4. **研发确认后用例**：方案文档头须有 `研发确认：…` 后，才将 `docs/testcase/` 新用例标为终稿；基线用例只读，**仅对变更 REQ** 增改废 TC。
+5. **三向互验**：拆解 §11、方案附录 G、用例矩阵中同一 REQ 须可互相检索；见 skill `references/three-way-traceability.md`。
+
+### 逐步操作（Cursor / Claude Code）
+
+| 步 | 在 IDE 中对 Agent 说（示例） | 落盘 |
+|----|------------------------------|------|
+| 0 | 「当前 PRD 相对 `_snapshots/…-prd-v1-….md` 有变更，请先存新快照。」 | `docs/prd/_snapshots/` 新文件 |
+| 1 | 「按 **quick-requirement-decomposition** 做增量拆解：基线快照 …，继承 `需求名-v0.1.md`，产出 **v0.2**，含 PRD diff 与 §9.2 REQ 变更。」 | `docs/prd/需求名-v0.2.md` |
+| 2 | 「按 **quick-tech-solution** 基于 v0.2 拆解写 **tech-solution-v1.1**，附录 D 对齐 §9.2，保留 v1.0。」 | `docs/design/…-v1.1.md` |
+| 3 | 「请研发确认 v1.1 附录 D 与变更设计；确认后写入方案文档头。」 | 方案头 `研发确认：…` |
+| 4 | 「**quick-requirement-testcase-trace** 升版：基线 `…-testcases-v1.0.md`，新建 v1.1，变更对照对齐 §9.2 + 附录 D。」 | `docs/testcase/…-v1.1.md` |
+| 5 | 「核对三向矩阵：变更 REQ 在拆解、方案、用例中锚点与 TC 是否一致。」 | 更新 §11 / 附录 G |
+
+### REQ 编号约定（变更时）
+
+| 变更类型 | REQ 处理 |
+|----------|----------|
+| 新能力 | 新编号 `REQ-0xx` |
+| 口径 / 范围变更 | **保留**原编号，§9.2 标「修改」 |
+| 能力下线 | 标「废弃」，写明替代 REQ 或从哪版起不实现 |
+| 仅措辞润色、验收不变 | 可不升 REQ；在 §9.1 摘要一句带过 |
+
+### 禁止
+
+- 在 `需求名-v0.1.md` 正文里直接改成 v0.2 内容而不新建文件
+- 方案附录 D 与拆解 §9.2 REQ 列表不一致
+- 方案未「研发确认」就发布用例终稿
+- 三向矩阵对变更 REQ 标 `OK` 但方案或用例仍引用旧拆解版本
+
+Skill 细则：`incremental-project-skills/quick-requirement-decomposition/references/prd-diff-incremental.md`、`quick-tech-solution/references/incremental-on-req-change.md`。
 
 ## 3. Cursor 怎么用
 
@@ -67,7 +110,11 @@ PRD / 产品输入
 
 4. 完成一步后，再进入下一步 skill。
 
----
+**PRD 已变更、需增量拆解时**（已有 v0.1 与 `_snapshots`）：
+
+> 基线 PRD 快照：`docs/prd/_snapshots/需求名-prd-v1-20260401.md`。请先存当前 PRD 为新快照，再按 **quick-requirement-decomposition** 对照 diff，**新建** `docs/prd/需求名-v0.2.md`（禁止覆盖 v0.1），含 §9.2 REQ 变更与 §11 三向矩阵。
+
+后续按 §2.1 升版方案 → 研发确认 → 升版用例。
 
 ## 4. Claude Code 怎么用
 
@@ -94,8 +141,10 @@ Skill 安装在 `.claude/skills/`。在 Claude Code 中可用 slash 命令触发
 **版本与追溯**：
 
 1. 拆解 ↔ 方案 ↔ 用例：文档头写明上游 PRD 快照与本文件版本；升版时 **新建文件**，禁止静默覆盖旧版。
-2. 编码阶段：以 **REQ + 技术方案 + design token JSON** 为准；冲突时列 OPEN 或确认，不私自定业务规则。
-3. 各 skill 的 `SKILL.md` 中有更细约定，以 skill 正文为准。
+2. **PRD 变更链**：快照 diff → 拆解 §9.2 → 方案附录 D →（研发确认）→ 用例变更对照区；三文档 REQ 编号以**最新拆解**为准。
+3. **三向矩阵**：拆解 §11 / 方案附录 G / 用例追溯矩阵互验；变更 REQ 须含可检索锚点与 TC，未就绪标 `待方案` / `待用例`。
+4. 编码阶段：以 **REQ + 技术方案 + design token JSON** 为准；冲突时列 OPEN 或确认，不私自定业务规则。
+5. 各 skill 的 `SKILL.md` 中有更细约定，以 skill 正文为准。
 
 ---
 
@@ -121,6 +170,10 @@ A：在项目根执行 `quick skill:update`。
 **Q：只想装部分 skill？**  
 A：执行 `quick skill:install --skills quick.requirement-decomposition,quick.tech-solution`。
 
----
+**Q：PRD 变了，要重做全流程吗？**  
+A：不必。保留旧版文件，按 §2.1 做**增量拆解**（对照 `_snapshots` diff → 新建拆解 v0.x → 新建方案 v1.x → 研发确认 → 新建用例 v1.x）。未变更 REQ 的方案节可引用上一版，未变更 REQ 的 TC 可引用基线编号。
 
-**文档版本**：v2.0 | 与 quick-cli skill 安装 preset 同步；Skill 行为以各 `SKILL.md` 为准。
+**Q：如何确认三文档没漂移？**  
+A：对 §9.2 中每个变更 REQ，在拆解 §11、方案附录 G、用例矩阵中检查：同一 REQ 编号、方案锚点可 `Ctrl+F`、TC 编号存在且与变更类型一致。
+
+**文档版本**：v2.1 | 与 quick-cli skill 安装 preset 同步；含 PRD 变更增量拆解说明；Skill 行为以各 `SKILL.md` 为准。

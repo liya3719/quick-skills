@@ -65,8 +65,8 @@ docs/                                   # 项目文档示例（PRD、方案、�
 
 | 阶段 | Skill | 核心能力 |
 |------|-------|---------|
-| 📋 需求 | [`quick-requirement-decomposition`](./incremental-project-skills/quick-requirement-decomposition/SKILL.md) | 将 PRD 拆解为带 REQ-xxx 编号的原子需求，输出大模型 / 研发 / QA 三视图与追溯矩阵 |
-| 📐 设计 | [`quick-tech-solution`](./incremental-project-skills/quick-tech-solution/SKILL.md) | 基于拆解稿输出可实施、可回溯的技术方案；支持子方案拆分与版本管理 |
+| 📋 需求 | [`quick-requirement-decomposition`](./incremental-project-skills/quick-requirement-decomposition/SKILL.md) | 将 PRD 拆解为带 REQ-xxx 编号的原子需求；**PRD 变更时对照快照 diff，新建版本拆解**，输出三视图、§9.2 REQ 变更清单与三向矩阵 |
+| 📐 设计 | [`quick-tech-solution`](./incremental-project-skills/quick-tech-solution/SKILL.md) | 基于拆解稿输出可实施、可回溯的技术方案；**需求变更后附录 D 对齐 §9.2 增量升版**；研发确认后再触发用例升版 |
 | 💻 实现 | [`quick-req-driven-codegen`](./incremental-project-skills/quick-req-driven-codegen/SKILL.md) | 以 PRD + 技术方案 + design token JSON 为真源驱动编码，禁止发明产品逻辑 |
 | 🧪 测试 | [`quick-requirement-testcase-trace`](./incremental-project-skills/quick-requirement-testcase-trace/SKILL.md) | 生成功能 / 异常 / 边界三层用例，输出至 **`docs/testcase/`**，每条 TC 追溯到 REQ-xxx |
 | 🔍 审查 | [`quick-arch-security-code-review`](./incremental-project-skills/quick-arch-security-code-review/SKILL.md) | 覆盖 SOLID、XSS/CORS/SQLi、鉴权越权、死代码、性能热路径的深度审查 |
@@ -90,6 +90,58 @@ PRD / 产品输入
       ▼
 代码审查 (quick-arch-security-code-review)       → PR / 合并前深度审查
 ```
+
+### PRD 变更后的增量拆解
+
+产品定稿或需求变更时，**禁止**在旧拆解 / 旧方案 / 旧用例文件上静默覆盖。按版本**新建文件**，并用三向矩阵防止漂移。
+
+**推荐目录布局**（详见 skill 内 `references/versioning.md`）：
+
+```
+docs/prd/
+├── _snapshots/                    # PRD 不可变快照（只追加、不覆盖）
+│   ├── 需求名-prd-v1-20260401.md
+│   └── 需求名-prd-v2-20260420.md  ← 本次变更先落盘
+├── 需求名-v0.1.md                 # 首版拆解（只读基线）
+└── 需求名-v0.2.md                 # 增量拆解（新建，含 §9 PRD diff + §9.2 REQ 变更）
+docs/design/
+├── 需求名-tech-solution-v1.0.md   # 基线方案
+└── 需求名-tech-solution-v1.1.md   # 附录 D 对齐 v0.2 的 §9.2
+docs/testcase/
+├── 需求名-testcases-v1.0.md       # 基线用例
+└── 需求名-testcases-v1.1.md       # 仅增改变更 REQ 的 TC（方案研发确认后）
+```
+
+**执行顺序**：
+
+| 步 | Skill | 动作 | 关键产出 |
+|----|-------|------|----------|
+| 1 | `quick-requirement-decomposition` | 对照 `_snapshots` **基线快照**与当前 PRD 做 diff；**新建** `需求名-v0.x.md` | §9.1 PRD diff 摘要、§9.2 REQ 新增/修改/废弃、§11 三向矩阵 |
+| 2 | `quick-tech-solution` | 读取新拆解 §9.2；**新建**方案版本；未变 REQ 可引用上一版锚点 | 附录 D（与 §9.2 一一对应）、附录 G 三向矩阵 |
+| 3 | 研发确认 | 确认附录 D 与变更设计可实施 | 方案文档头写入 `研发确认：日期 / 确认人 / 版本` |
+| 4 | `quick-requirement-testcase-trace` | 基线用例只读；**新建**用例文件；变更对照区对齐 §9.2 + 附录 D | 仅对变更 REQ 增改废 TC；回填三向矩阵 TC 列 |
+
+**IDE 触发示例**（Cursor Agent）：
+
+```
+PRD 已更新。基线快照 docs/prd/_snapshots/需求名-prd-v1-20260401.md，
+当前 PRD 请先存为新快照，再按 quick-requirement-decomposition 做增量拆解，
+产出 docs/prd/需求名-v0.2.md，含 PRD diff 与 REQ 级变更清单。
+```
+
+```
+拆解 v0.2 已定稿。按 quick-tech-solution 写 tech-solution-v1.1，
+附录 D 对齐拆解 §9.2，保留 v1.0 方案不覆盖。
+```
+
+```
+方案 v1.1 研发已确认。按 quick-requirement-testcase-trace 升版用例，
+基线 docs/testcase/需求名-testcases-v1.0.md，仅增量 REQ-003 相关 TC。
+```
+
+**三向互验**（交付前自检）：拆解 §11 / 方案附录 G / 用例追溯矩阵中，同一 REQ 的锚点与 TC 编号须可互相 `Ctrl+F`；下游未就绪标 `待方案` / `待用例`，不得标 `OK`。
+
+更细步骤见 [`WORKFLOW.md`](./WORKFLOW.md) §「PRD 变更后的增量拆解」与各 skill 的 `references/prd-diff-incremental.md`、`references/incremental-on-req-change.md`。
 
 ---
 
@@ -181,9 +233,9 @@ understand-anything / /understand    ← 先做代码理解，明确职责、契
 | # | 规则 | 说明 |
 |---|------|------|
 | 1 | **禁止发明** | 每条实现承诺、接口字段、错误码必须对应到 REQ-xxx 或标注「工程补充」 |
-| 2 | **禁止覆盖** | PRD 变更或方案升版时须新建版本文件，旧版保留可查 |
+| 2 | **禁止覆盖** | PRD 变更或方案升版时须**新建版本文件**，旧版保留可查；拆解须**对照 PRD 快照 diff**，记录 §9.2 REQ 级变更 |
 | 3 | **禁止静默删除** | 未经用户明确确认，不得删除代码或旧文件 |
-| 4 | **追溯优先** | 需求 → 方案 → 代码 → 用例，全链路可回溯 |
+| 4 | **追溯优先** | 需求 → 方案 → 用例，全链路可回溯；PRD 变更后须**三向矩阵互验**（拆解 §11 ↔ 方案附录 G ↔ 用例 TC） |
 
 ---
 

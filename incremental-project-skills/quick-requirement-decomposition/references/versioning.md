@@ -52,8 +52,17 @@ docs/
 
 对每一次「拆解新版本」填写：
 
-- **上游**：引用的 PRD 快照文件名与版本说明。
+- **上游**：引用的 PRD 快照文件名与版本说明；**非首版**另填基线快照路径与 **PRD diff 摘要**（见 `prd-diff-incremental.md`）。
 - **相对上一版拆解**：新增/修改/废弃的 REQ 列表；影响模块一句话摘要。
 - **OPEN**：关闭或新增的待澄清编号。
+- **三向矩阵**：§11 或独立 trace 文件已更新；与 `three-way-traceability.md` 互验通过。
 
-详见 `output-template.md` 第 9 节表格。
+## 下游产物联动（REQ 变更后）
+
+| 顺序 | 产物 | 规则 |
+|------|------|------|
+| 1 | 本拆解 | 新建版本，§9.2 REQ 变更清单 |
+| 2 | 技术方案 | 新建版本，附录 D 对齐 §9.2；见 `quick-tech-solution` / `incremental-on-req-change.md` |
+| 3 | 研发确认 | 方案文档头记录确认后再进入用例 |
+| 4 | 测试用例 | `docs/testcase/` 新建版本，基线只读；见 `quick-requirement-testcase-trace` / `change-versioning.md` |
+| 5 | 三向矩阵 | 三文档 REQ 编号一致，锚点可 Ctrl+F |
