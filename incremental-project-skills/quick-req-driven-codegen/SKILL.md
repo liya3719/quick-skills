@@ -134,6 +134,6 @@ Ask：
 
 ## 与相邻技能的关系
 
-- **requirement-decomposition**：消费 REQ 与版本规则，不在此技能内改写拆解稿。
-- **rd-tech-solution**：总方案、子方案命名、附录 F、追溯矩阵以方案为准；冲突时回到方案或 OPEN。
-- **requirement-testcase-trace**：实现结果应对齐 TC 或说明 BLOCKED，不替代人工执行测试。
+- **quick-requirement-decomposition**：消费 REQ 与版本规则，不在此技能内改写拆解稿。
+- **quick-tech-solution**：总方案、子方案命名、附录 F、追溯矩阵以方案为准；冲突时回到方案或 OPEN。
+- **quick-requirement-testcase-trace**：实现结果应对齐 TC 或说明 BLOCKED，不替代人工执行测试。
