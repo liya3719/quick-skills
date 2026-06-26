@@ -1,0 +1,17 @@
+{
+  "name": "quick.visual-audit",
+  "type": "skill",
+  "version": "1.0.0",
+  "description": "UI 视觉审计：对比 metadata/token 与实现，输出 VA 偏差清单回流 codegen",
+  "sourceDir": "incremental-project-skills/quick-visual-audit",
+  "entry": "SKILL.md",
+  "applicableTemplates": ["Vue3Admin", "Vue3Mobile", "ReactAdmin", "ReactMobile", "Component", "Electron"],
+  "inputs": [
+    "codegen_doc",
+    "design_metadata",
+    "solution_doc"
+  ],
+  "outputs": [
+    "docs/ai/visual-audit/{name}-视觉偏差清单-v{x.y}.md"
+  ]
+}

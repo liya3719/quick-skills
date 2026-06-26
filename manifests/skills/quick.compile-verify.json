@@ -1,0 +1,17 @@
+{
+  "name": "quick.compile-verify",
+  "type": "skill",
+  "version": "1.0.0",
+  "description": "编译验证：lint/typecheck/build/多平台 bundle；失败定位修复，环境或决策类交 OPEN",
+  "sourceDir": "incremental-project-skills/quick-compile-verify",
+  "entry": "SKILL.md",
+  "applicableTemplates": ["Vue3Admin", "Vue3Mobile", "ReactAdmin", "ReactMobile", "Component", "Electron"],
+  "inputs": [
+    "codegen_doc",
+    "solution_doc",
+    "project_rules"
+  ],
+  "outputs": [
+    "docs/ai/compile-verify/{name}-编译验证报告-v{x.y}.md"
+  ]
+}

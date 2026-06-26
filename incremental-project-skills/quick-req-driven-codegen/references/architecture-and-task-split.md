@@ -39,7 +39,7 @@
 
 ## 与 rd-tech-solution 的衔接
 
-- 子方案命名、附录 F、总方案与子方案追溯关系以 **`rd-tech-solution` 与子设计拆分约定**为准；本 reference 不重新定义文件名规则。
+- 子方案命名、附录 F、总方案与子方案追溯关系以 **`quick-tech-solution`** 与子设计拆分约定为准；本 reference 不重新定义文件名规则。
 - 若用户仅在实现阶段进入本 skill，**以磁盘上的总方案 + 子方案为准**，不以对话记忆为准。
 
 ## Anti-patterns

@@ -5,11 +5,13 @@
   "defaultScope": "project",
   "presets": {
     "ai-coding-full-flow": {
-      "description": "AI Coding 全流程：需求拆解 → 技术方案 → 编码 → 测试用例 → 架构安全审查",
+      "description": "AI Coding 全流程：需求拆解 → 技术方案 → 编码 → 视觉审计 → 编译验证 → 测试用例 → 架构安全审查",
       "skills": [
         "quick.requirement-decomposition",
         "quick.tech-solution",
         "quick.req-driven-codegen",
+        "quick.visual-audit",
+        "quick.compile-verify",
         "quick.requirement-testcase-trace",
         "quick.arch-security-code-review"
       ],
@@ -51,6 +53,22 @@
         "cursor": "quick-req-driven-codegen",
         "claude": "quick-req-driven-codegen",
         "agents": "quick-req-driven-codegen"
+      }
+    },
+    "quick.visual-audit": {
+      "sourceDir": "incremental-project-skills/quick-visual-audit",
+      "dirNameByPlatform": {
+        "cursor": "quick-visual-audit",
+        "claude": "quick-visual-audit",
+        "agents": "quick-visual-audit"
+      }
+    },
+    "quick.compile-verify": {
+      "sourceDir": "incremental-project-skills/quick-compile-verify",
+      "dirNameByPlatform": {
+        "cursor": "quick-compile-verify",
+        "claude": "quick-compile-verify",
+        "agents": "quick-compile-verify"
       }
     },
     "quick.requirement-testcase-trace": {

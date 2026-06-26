@@ -9,7 +9,9 @@
     { "id": "requirement-decomposition", "skill": "quick.requirement-decomposition", "outputs": ["requirements_doc"] },
     { "id": "tech-solution", "skill": "quick.tech-solution", "requires": ["requirement-decomposition"], "outputs": ["solution_doc"] },
     { "id": "req-driven-codegen", "skill": "quick.req-driven-codegen", "requires": ["tech-solution"], "outputs": ["codegen_doc"] },
+    { "id": "visual-audit", "skill": "quick.visual-audit", "requires": ["req-driven-codegen"], "optional": true, "outputs": ["visual_audit_doc"] },
+    { "id": "compile-verify", "skill": "quick.compile-verify", "requires": ["req-driven-codegen"], "outputs": ["compile_verify_doc"] },
     { "id": "requirement-testcase-trace", "skill": "quick.requirement-testcase-trace", "requires": ["tech-solution"], "optional": true, "outputs": ["testcase_doc"] },
-    { "id": "arch-security-code-review", "skill": "quick.arch-security-code-review", "requires": ["req-driven-codegen"], "outputs": ["review_doc"] }
+    { "id": "arch-security-code-review", "skill": "quick.arch-security-code-review", "requires": ["compile-verify"], "outputs": ["review_doc"] }
   ]
 }

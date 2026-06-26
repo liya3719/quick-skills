@@ -1,11 +1,19 @@
 {
   "name": "quick.req-driven-codegen",
   "type": "skill",
-  "version": "1.0.0",
-  "description": "基于需求拆解与技术方案生成代码实施计划",
+  "version": "2.0.0",
+  "description": "REQ 驱动编码：必读拆解/方案/metadata/项目规则；执行计划+分层实现+架构对齐报告；pass 后交 quick-compile-verify",
   "sourceDir": "incremental-project-skills/quick-req-driven-codegen",
   "entry": "SKILL.md",
   "applicableTemplates": ["Vue3Admin", "Vue3Mobile", "ReactAdmin", "ReactMobile", "Component", "Electron"],
-  "inputs": ["requirements_doc", "solution_doc"],
-  "outputs": ["docs/ai/codegen/codegen-plan.v1.md"]
+  "inputs": [
+    "requirements_doc",
+    "solution_doc",
+    "design_metadata",
+    "project_rules"
+  ],
+  "outputs": [
+    "docs/ai/codegen/{name}-执行计划-v{x.y}.md",
+    "docs/ai/codegen/{name}-架构对齐报告-v{x.y}.md"
+  ]
 }

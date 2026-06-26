@@ -8,7 +8,7 @@
 
 在前端工程实践中，团队同时面临两类挑战：
 
-1. **增量项目**：新需求从 PRD 到上线，需要在短周期内完成需求拆解、技术方案、编码、测试与审查，AI 可以贯穿全流程提效。
+1. **增量项目**：新需求从 PRD 到上线，需要在短周期内完成需求拆解、技术方案、编码、视觉审计、编译验证、测试与审查，AI 可以贯穿全流程提效。
 2. **存量项目**：已有项目在长期维护中积累了技术债务，需要借助 AI 辅助完成重构、治理、性能优化与规范对齐。
 
 **quick-skills** 将这两类场景沉淀为可复用的 AI Skill，统一管理、按需组合，形成"需求驱动、全链路可追溯"的 AI Coding 工作流。
@@ -44,6 +44,8 @@ incremental-project-skills/
 ├── quick-requirement-decomposition/    # 产品需求拆解
 ├── quick-tech-solution/                # 研发技术方案
 ├── quick-req-driven-codegen/           # REQ 驱动代码生成
+├── quick-visual-audit/                 # UI 视觉审计（metadata 对账）
+├── quick-compile-verify/               # 编译验证（lint/tsc/build/多平台 bundle）
 ├── quick-requirement-testcase-trace/   # 需求追溯测试用例
 └── quick-arch-security-code-review/    # 架构与安全代码审查
 
@@ -51,23 +53,30 @@ stock-project-governance/
 ├── module-refactor/                    # 独立 / 链路模块等价重构
 └── refactor-feature-addition/          # 存量模块新增功能
 
-docs/                                   # 项目文档示例（PRD、方案、测试用例）
+docs/                                   # 项目文档示例（PRD、方案、测试、AI 产物）
 ├── prd/
 ├── design/
-└── testcase/
+├── testcase/
+└── ai/
+    ├── codegen/                        # 执行计划、架构对齐报告
+    ├── visual-audit/                   # 视觉偏差清单（VA-xxx）
+    ├── compile-verify/                 # 编译验证报告
+    └── review/                         # 架构安全审查报告
 ```
 
 ---
 
 ## 增量项目 Skill
 
-覆盖新项目从立项到上线的五个核心阶段，每个 Skill 消费上游产物作为唯一真源，禁止跨 Skill 发明业务规则。
+覆盖新项目从立项到上线的七个核心阶段，每个 Skill 消费上游产物作为唯一真源，禁止跨 Skill 发明业务规则。
 
 | 阶段 | Skill | 核心能力 |
 |------|-------|---------|
 | 📋 需求 | [`quick-requirement-decomposition`](./incremental-project-skills/quick-requirement-decomposition/SKILL.md) | 将 PRD 拆解为带 REQ-xxx 编号的原子需求；**PRD 变更时对照快照 diff，新建版本拆解**，输出三视图、§9.2 REQ 变更清单与三向矩阵 |
 | 📐 设计 | [`quick-tech-solution`](./incremental-project-skills/quick-tech-solution/SKILL.md) | 基于拆解稿输出可实施、可回溯的技术方案；**需求变更后附录 D 对齐 §9.2 增量升版**；研发确认后再触发用例升版 |
 | 💻 实现 | [`quick-req-driven-codegen`](./incremental-project-skills/quick-req-driven-codegen/SKILL.md) | 以 PRD + 技术方案 + design token JSON 为真源驱动编码，禁止发明产品逻辑 |
+| 👁 视觉 | [`quick-visual-audit`](./incremental-project-skills/quick-visual-audit/SKILL.md) | 对比 metadata/token 审计布局、间距、字号、颜色、状态、资源、响应式与多端；输出 VA 偏差清单回流 codegen |
+| 🔧 验证 | [`quick-compile-verify`](./incremental-project-skills/quick-compile-verify/SKILL.md) | 视觉 pass 后 lint / TS 编译 / Web 构建；多平台 bundle；失败定位修复 |
 | 🧪 测试 | [`quick-requirement-testcase-trace`](./incremental-project-skills/quick-requirement-testcase-trace/SKILL.md) | 生成功能 / 异常 / 边界三层用例，输出至 **`docs/testcase/`**，每条 TC 追溯到 REQ-xxx |
 | 🔍 审查 | [`quick-arch-security-code-review`](./incremental-project-skills/quick-arch-security-code-review/SKILL.md) | 覆盖 SOLID、XSS/CORS/SQLi、鉴权越权、死代码、性能热路径的深度审查 |
 
@@ -86,6 +95,12 @@ PRD / 产品输入
       ▼                                   ▼
 代码生成                              测试用例 → docs/testcase/
 (quick-req-driven-codegen)            (quick-requirement-testcase-trace)
+      │
+      ▼
+视觉审计 (quick-visual-audit)                    → VA 偏差清单 → 回流 codegen
+      │
+      ▼
+编译验证 (quick-compile-verify)                  → lint / tsc / build / bundle
       │
       ▼
 代码审查 (quick-arch-security-code-review)       → PR / 合并前深度审查
@@ -110,6 +125,11 @@ docs/design/
 docs/testcase/
 ├── 需求名-testcases-v1.0.md       # 基线用例
 └── 需求名-testcases-v1.1.md       # 仅增改变更 REQ 的 TC（方案研发确认后）
+docs/ai/
+├── codegen/                       # 执行计划、架构对齐报告
+├── visual-audit/                  # 视觉偏差清单
+├── compile-verify/                # 编译验证报告
+└── review/                        # 审查报告
 ```
 
 **执行顺序**：
@@ -139,6 +159,21 @@ PRD 已更新。基线快照 docs/prd/_snapshots/需求名-prd-v1-20260401.md，
 基线 docs/testcase/需求名-testcases-v1.0.md，仅增量 REQ-003 相关 TC。
 ```
 
+```
+按 quick-req-driven-codegen 实现：必读拆解 v0.2、方案 v1.1、Figma metadata 与 token JSON；
+先落盘执行计划，分层实现后输出架构对齐报告。
+```
+
+```
+架构对齐 pass。按 quick-visual-audit 对比 metadata，产出 VA 偏差清单；
+若有 P0/P1，回流 quick-req-driven-codegen 按清单修复（≤3 轮）。
+```
+
+```
+视觉 pass 或 UI-N/A。按 quick-compile-verify 跑 lint、tsc、build；
+多平台场景追加 iOS/Android/Harmony bundle 验证。
+```
+
 **三向互验**（交付前自检）：拆解 §11 / 方案附录 G / 用例追溯矩阵中，同一 REQ 的锚点与 TC 编号须可互相 `Ctrl+F`；下游未就绪标 `待方案` / `待用例`，不得标 `OK`。
 
 更细步骤见 [`WORKFLOW.md`](./WORKFLOW.md) §「PRD 变更后的增量拆解」与各 skill 的 `references/prd-diff-incremental.md`、`references/incremental-on-req-change.md`。
@@ -162,17 +197,29 @@ PRD 已更新。基线快照 docs/prd/_snapshots/需求名-prd-v1-20260401.md，
 
 ### Skill 注册范围
 
-- **增量项目**：`incremental-project-skills/` 下 5 个 skill（manifest 在 `manifests/skills/`）
+- **增量项目**：`incremental-project-skills/` 下 **7** 个 skill（manifest 在 `manifests/skills/`）
 - **存量治理**：`stock-project-governance/` 下 2 个 skill（manifest 在 `manifests/skills/`）
 
 ### init 安装 preset
 
 `quick init` 选「是」安装 AI skill 时，CLI 按 `install-targets.json` 中 `presets.ai-coding-full-flow` 安装：
 
-- 5 个增量 skill → `.cursor/skills/` + `.claude/skills/`
+- **7** 个增量 skill → `.cursor/skills/` + `.claude/skills/`
 - 使用说明 → `docs/WORKFLOW.md`
 
-产物约定：
+产物约定（增量全流程）：
+
+| 阶段 | 典型路径 |
+|------|---------|
+| 需求拆解 | `docs/prd/{需求名}-v{x.y}.md` |
+| 技术方案 | `docs/design/{需求名}-tech-solution-v{x.y}.md` |
+| 编码 | `docs/ai/codegen/{需求名}-执行计划-v{x.y}.md`、`…-架构对齐报告-v{x.y}.md` |
+| 视觉审计 | `docs/ai/visual-audit/{需求名}-视觉偏差清单-v{x.y}.md` |
+| 编译验证 | `docs/ai/compile-verify/{需求名}-编译验证报告-v{x.y}.md` |
+| 测试用例 | `docs/testcase/{需求名}-testcases-v{x.y}.md` |
+| 代码审查 | `docs/ai/review/`（按 skill 约定） |
+
+编排层约定：
 - `manifests/skills/*.json` 的 `outputs` 写真实产物文件路径，例如 `docs/ai/requirements/requirements.v1.md`
 - `flow.json.steps[].outputs` 写编排层产物别名，例如 `requirements_doc`、`codegen_doc`
 - 建议由 CLI 在 `.ai/artifact-index.json` 中维护别名到真实文件路径的映射
@@ -235,7 +282,7 @@ understand-anything / /understand    ← 先做代码理解，明确职责、契
 | 1 | **禁止发明** | 每条实现承诺、接口字段、错误码必须对应到 REQ-xxx 或标注「工程补充」 |
 | 2 | **禁止覆盖** | PRD 变更或方案升版时须**新建版本文件**，旧版保留可查；拆解须**对照 PRD 快照 diff**，记录 §9.2 REQ 级变更 |
 | 3 | **禁止静默删除** | 未经用户明确确认，不得删除代码或旧文件 |
-| 4 | **追溯优先** | 需求 → 方案 → 用例，全链路可回溯；PRD 变更后须**三向矩阵互验**（拆解 §11 ↔ 方案附录 G ↔ 用例 TC） |
+| 4 | **追溯优先** | 需求 → 方案 → 代码 → 视觉/编译 → 用例，全链路可回溯；PRD 变更后须**三向矩阵互验**（拆解 §11 ↔ 方案附录 G ↔ 用例 TC） |
 
 ---
 
@@ -245,7 +292,8 @@ understand-anything / /understand    ← 先做代码理解，明确职责、契
 
 1. 在 `incremental-project-skills/` 下新建子目录，命名以 `quick-` 开头，使用 `kebab-case`
 2. 子目录内包含 `SKILL.md`（主文件）及可选的 `references/` 参考资料目录
-3. 在 [`incremental-project-skills/README.md`](./incremental-project-skills/README.md) 的 Skill 全景表格中补充条目
+3. 在 [`incremental-project-skills/README.md`](./incremental-project-skills/README.md) 的 Skill 全景表格与协作关系图中补充条目
+4. 在 `manifests/skills/` 增加 manifest，并在 `install-targets.json` 与 `flows/` 中登记（若纳入全流程 preset）
 
 ### 存量项目 Skill
 
