@@ -6,9 +6,9 @@
 
 ## 输入
 
-- `quick-requirement-decomposition` 产出（REQ-xxx）
-- `quick-tech-solution` 产出（设计分块 / 模块 / 接口）
-- 设计稿 metadata（Figma / MasterGo）
+- `docs/prd/` 需求拆解（REQ-xxx；含研发确认记录）
+- `docs/design/` 技术方案（设计分块 / 模块 / 接口；含研发确认记录）
+- `design/` 设计数据（Figma / MasterGo / token JSON；含 manifest 确认）
 - 项目规则（`AGENTS.md` / `AGENT.md` / `CLAUDE.md`）
 
 ## Block 最低字段 ⛔
@@ -35,9 +35,9 @@
 # 执行计划 — {需求名} v{x.y}
 
 ## 元数据
-- 拆解：…
-- 总方案：…
-- 设计 metadata：…
+- 拆解：`docs/prd/{需求名}-v{x.y}.md`（研发确认：…）
+- 总方案：`docs/design/{需求名}-tech-solution-v{x.y}.md`（研发确认：…）
+- 设计数据：`design/{需求名}/…`（研发确认：…）
 - 项目规则：AGENTS.md | CLAUDE.md
 
 ## Block 表

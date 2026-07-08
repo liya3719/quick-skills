@@ -2,15 +2,17 @@
 
 ## 何时加载
 
-步骤 2（设计稿 metadata 检查）**必读**；缺关键产物时 **⛔ BLOCKING**，禁止进入 UI 编码。
+步骤 3（`design/` 设计数据质量检查）**必读**；缺关键产物时 **⛔ BLOCKING**，禁止进入 UI 编码。
 
-## 必查产物
+**前置**：步骤 2 已通过 `input-materials-gate.md`（含 `design/` 研发确认）。
 
-| 来源 | 最低要求 | 缺失时 |
-|------|----------|--------|
-| **Figma** | 可解析 metadata（`figma.json` / 插件导出 / API 节点树 + design token 或变量表） | 标 `BLOCKED-DESIGN`；禁止凭截图写 UI |
-| **MasterGo** | 可解析 metadata（DSL / 导出 JSON / 团队约定路径） | 同上 |
-| **design token JSON** | 与 SKILL 步骤 1 一致；语义 token 可映射到组件 | 样式层标 `missing`，不得硬编码替代 |
+## 必查产物（均在 `design/` 下）
+
+| 来源 | 最低要求 | 典型路径 | 缺失时 |
+|------|----------|----------|--------|
+| **Figma** | 可解析 metadata（节点树 + token/变量表） | `design/{需求名}/figma.json` 或团队约定 | 标 `BLOCKED-DESIGN`；禁止凭截图写 UI |
+| **MasterGo** | 可解析 metadata（DSL / 导出 JSON） | `design/{需求名}/mastergo.json` 或团队约定 | 同上 |
+| **design token JSON** | 语义 token 可映射到组件 | `design/{需求名}/tokens.json` 或 `design/token/` | 样式层标 `missing`，不得硬编码替代 |
 
 ## 检查清单
 
