@@ -21,9 +21,10 @@ Skill 源仓库：[https://github.com/liya3719/quick-skills](https://github.com/
 | `docs/ai/visual-audit/` | 视觉偏差清单（VA-xxx） |
 | `docs/ai/compile-verify/` | 编译验证报告 |
 | `docs/ai/review/` | 架构与安全审查报告 |
+| `docs/ai/metrics/` | 流水线观测指标 JSON/报告、rollup（可选） |
 | `.quick/skills-lock.json` | 安装记录（供 `quick skill:update` 使用） |
 
-默认安装的 7 个 skill：
+默认安装的 8 个 skill：
 
 | 顺序 | 目录名 | 职责 |
 |------|--------|------|
@@ -34,6 +35,7 @@ Skill 源仓库：[https://github.com/liya3719/quick-skills](https://github.com/
 | 5 | `quick-compile-verify` | 编译验证（lint / tsc / build / 多平台 bundle） |
 | 6 | `quick-requirement-testcase-trace` | 需求追溯测试用例（可选） |
 | 7 | `quick-arch-security-code-review` | 架构与安全代码审查 |
+| 8 | `quick-pipeline-observability` | 流水线观测（只读扫描产物 → metrics；可选末步） |
 
 ---
 
@@ -60,9 +62,12 @@ PRD / 产品输入
       │
       ▼
 ⑦ 架构与安全审查 → docs/ai/review/
+      │
+      ▼
+⑧ 流水线观测（可选）→ docs/ai/metrics/
 ```
 
-**原则**：后一步消费上一步产物作为真源，不要跨 skill 发明业务规则。
+**原则**：后一步消费上一步产物作为真源，不要跨 skill 发明业务规则。观测只读扫描已有产物，**不改写**上游文档；无埋点平台，靠扫描脚本落盘 metrics。
 
 **依赖关系**：
 
@@ -75,6 +80,7 @@ PRD / 产品输入
 | ⑤ | 视觉审计 | ③ UI 实现 + metadata（**UI-N/A 可跳过**） |
 | ⑥ | 编译验证 | ③ 架构对齐 pass + ⑤ pass 或 UI-N/A |
 | ⑦ | 代码审查 | ⑥ 编译 pass |
+| ⑧ | 流水线观测（可选） | 至少有 ① 拆解；建议 ⑦ 后再跑，可扫描当前已有产物 |
 
 **回流约定**：视觉 P0/P1 → 回流 ③ 修复（≤3 轮）；架构对齐 missing → 回流 ③（≤5 轮）；编译 auto-fix → 在 ⑥ 内修复（≤3 轮）。
 
@@ -137,6 +143,7 @@ Skill 细则：`incremental-project-skills/quick-requirement-decomposition/refer
 | 4 | 「存在 VA P0/P1：按偏差清单回流 **quick-req-driven-codegen** 精准修复 UI，修复后复审计（≤3 轮）。」 | 更新偏差清单「回流记录」 |
 | 5 | 「视觉 pass 或 UI-N/A。按 **quick-compile-verify** 跑 lint → typecheck → build；含 Native 时验 bundle。」 | `docs/ai/compile-verify/{需求名}-编译验证报告-v{x.y}.md` |
 | 6 | 「编译 pass 后按 **quick-arch-security-code-review** 做合并前审查。」 | `docs/ai/review/` |
+| 7 | 「按 **quick-pipeline-observability** 扫描本迭代产物，产出 metrics（可选）。」 | `docs/ai/metrics/{需求名}-metrics-v{x.y}.json` / `.md` |
 
 ### 禁止
 
@@ -144,6 +151,7 @@ Skill 细则：`incremental-project-skills/quick-requirement-decomposition/refer
 - 无 metadata 凭截图做视觉 pass
 - 视觉 P0 未解进入编译验证
 - 在本 skill 视觉审计阶段直接改 UI（应产出 VA 清单交 codegen）
+- 为凑观测指标改写上游拆解/方案/用例/对齐报告
 
 ---
 
@@ -171,6 +179,10 @@ Skill 细则：`incremental-project-skills/quick-requirement-decomposition/refer
 
 > 视觉 pass。按 **quick-compile-verify** 执行 lint、tsc、build（scope: web|all）。
 
+**交付后可选观测**（⑧）：
+
+> 按 **quick-pipeline-observability** 扫描本迭代拆解/方案/对齐报告/用例/VA，落盘 `docs/ai/metrics/`；有红灯须解释，禁止改上游文档凑指标。亦可执行 skill 内 `scripts/scan_pipeline_metrics.py --root . --name {需求名} --version 0.1`。
+
 ## 4. Claude Code 怎么用
 
 Skill 安装在 `.claude/skills/`。在 Claude Code 中可用 slash 命令触发，例如：
@@ -196,6 +208,7 @@ Skill 安装在 `.claude/skills/`。在 Claude Code 中可用 slash 命令触发
 | 编译验证报告 | `docs/ai/compile-verify/` | `{需求名}-编译验证报告-v{x.y}.md` |
 | 测试用例 | `docs/testcase/` | `{需求名}-testcases-v{x.y}.md` |
 | 审查报告 | `docs/ai/review/` | 按 skill 约定 |
+| 流水线观测 | `docs/ai/metrics/` | `{需求名}-metrics-v{x.y}.json` / `.md`；可选 `_rollup-YYYY-WW.md` |
 
 **版本与追溯**：
 
@@ -205,7 +218,8 @@ Skill 安装在 `.claude/skills/`。在 Claude Code 中可用 slash 命令触发
 4. 编码阶段：以 **REQ + 技术方案 + design metadata + token JSON** 为准；冲突时列 OPEN 或确认，不私自定业务规则。
 5. 视觉阶段：以 **metadata / token 数值** 为准，产出 VA-xxx 回流 codegen；禁止截图目测 pass。
 6. 编译阶段：以项目 **package.json / AGENTS.md** 脚本为准；可 auto-fix 的错误在 compile-verify 内修完重跑。
-7. 各 skill 的 `SKILL.md` 中有更细约定，以 skill 正文为准。
+7. 观测阶段：只读扫描上游产物；metrics **升版不覆盖**旧文件；不替代三向矩阵与各 skill 门禁。
+8. 各 skill 的 `SKILL.md` 中有更细约定，以 skill 正文为准。
 
 ---
 
@@ -238,6 +252,9 @@ A：不必。在执行计划与对齐报告中标 **UI-N/A**（须用户确认�
 A：不必。保留旧版文件，按 §2.1 做**增量拆解**（对照 `_snapshots` diff → 新建拆解 v0.x → 新建方案 v1.x → 研发确认 → 新建用例 v1.x）。未变更 REQ 的方案节可引用上一版，未变更 REQ 的 TC 可引用基线编号。
 
 **Q：如何确认三文档没漂移？**  
-A：对 §9.2 中每个变更 REQ，在拆解 §11、方案附录 G、用例矩阵中检查：同一 REQ 编号、方案锚点可 `Ctrl+F`、TC 编号存在且与变更类型一致。
+A：对 §9.2 中每个变更 REQ，在拆解 §11、方案附录 G、用例矩阵中检查：同一 REQ 编号、方案锚点可 `Ctrl+F`、TC 编号存在且与变更类型一致。也可在交付后跑 **quick-pipeline-observability** 看 `solution.change_consistency` / `drift_events` 等红灯，但观测**不替代**三向矩阵人工互验。
 
-**文档版本**：v2.2 | 与 quick-cli `ai-coding-full-flow` preset（7 skill）同步；含 PRD 增量拆解与编码→视觉→编译链路；Skill 行为以各 `SKILL.md` 为准。
+**Q：流水线观测必须跑吗？**  
+A：不必。⑧ 为可选末步；至少有拆解产物即可扫描。不替代各 skill 确认门与三向矩阵。
+
+**文档版本**：v2.3 | 与 quick-cli `ai-coding-full-flow` preset（8 skill）同步；含 PRD 增量拆解、编码→视觉→编译链路与可选流水线观测；Skill 行为以各 `SKILL.md` 为准。

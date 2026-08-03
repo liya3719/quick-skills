@@ -8,7 +8,7 @@
 
 在前端工程实践中，团队同时面临两类挑战：
 
-1. **增量项目**：新需求从 PRD 到上线，需要在短周期内完成需求拆解、技术方案、编码、视觉审计、编译验证、测试与审查，AI 可以贯穿全流程提效。
+1. **增量项目**：新需求从 PRD 到上线，需要在短周期内完成需求拆解、技术方案、编码、视觉审计、编译验证、测试、审查与可选流水线观测，AI 可以贯穿全流程提效。
 2. **存量项目**：已有项目在长期维护中积累了技术债务，需要借助 AI 辅助完成重构、治理、性能优化与规范对齐。
 
 **quick-skills** 将这两类场景沉淀为可复用的 AI Skill，统一管理、按需组合，形成"需求驱动、全链路可追溯"的 AI Coding 工作流。
@@ -68,7 +68,7 @@ docs/                                   # 项目文档示例（PRD、方案、�
 
 ## 增量项目 Skill
 
-覆盖新项目从立项到上线的七个核心阶段，每个 Skill 消费上游产物作为唯一真源，禁止跨 Skill 发明业务规则。
+覆盖新项目从立项到上线的核心阶段（含可选观测），每个 Skill 消费上游产物作为唯一真源，禁止跨 Skill 发明业务规则。
 
 | 阶段 | Skill | 核心能力 |
 |------|-------|---------|
@@ -79,6 +79,7 @@ docs/                                   # 项目文档示例（PRD、方案、�
 | 🔧 验证 | [`quick-compile-verify`](./incremental-project-skills/quick-compile-verify/SKILL.md) | 视觉 pass 后 lint / TS 编译 / Web 构建；多平台 bundle；失败定位修复 |
 | 🧪 测试 | [`quick-requirement-testcase-trace`](./incremental-project-skills/quick-requirement-testcase-trace/SKILL.md) | 生成功能 / 异常 / 边界三层用例，输出至 **`docs/testcase/`**，每条 TC 追溯到 REQ-xxx |
 | 🔍 审查 | [`quick-arch-security-code-review`](./incremental-project-skills/quick-arch-security-code-review/SKILL.md) | 覆盖 SOLID、XSS/CORS/SQLi、鉴权越权、死代码、性能热路径的深度审查 |
+| 📊 观测 | [`quick-pipeline-observability`](./incremental-project-skills/quick-pipeline-observability/SKILL.md) | 只读扫描各阶段产物，产出 `docs/ai/metrics` 指标 JSON/报告与 rollup；无埋点平台 |
 
 ### 协作流程
 
@@ -104,6 +105,9 @@ PRD / 产品输入
       │
       ▼
 代码审查 (quick-arch-security-code-review)       → PR / 合并前深度审查
+      │
+      ▼
+流水线观测 (quick-pipeline-observability)        → docs/ai/metrics（可选末步）
 ```
 
 ### PRD 变更后的增量拆解
@@ -197,14 +201,14 @@ PRD 已更新。基线快照 docs/prd/_snapshots/需求名-prd-v1-20260401.md，
 
 ### Skill 注册范围
 
-- **增量项目**：`incremental-project-skills/` 下 **7** 个 skill（manifest 在 `manifests/skills/`）
+- **增量项目**：`incremental-project-skills/` 下 **8** 个 skill（manifest 在 `manifests/skills/`）
 - **存量治理**：`stock-project-governance/` 下 2 个 skill（manifest 在 `manifests/skills/`）
 
 ### init 安装 preset
 
 `quick init` 选「是」安装 AI skill 时，CLI 按 `install-targets.json` 中 `presets.ai-coding-full-flow` 安装：
 
-- **7** 个增量 skill → `.cursor/skills/` + `.claude/skills/`
+- **8** 个增量 skill → `.cursor/skills/` + `.claude/skills/`
 - 使用说明 → `docs/WORKFLOW.md`
 
 产物约定（增量全流程）：
@@ -218,10 +222,11 @@ PRD 已更新。基线快照 docs/prd/_snapshots/需求名-prd-v1-20260401.md，
 | 编译验证 | `docs/ai/compile-verify/{需求名}-编译验证报告-v{x.y}.md` |
 | 测试用例 | `docs/testcase/{需求名}-testcases-v{x.y}.md` |
 | 代码审查 | `docs/ai/review/`（按 skill 约定） |
+| 流水线观测 | `docs/ai/metrics/{需求名}-metrics-v{x.y}.json` / `.md`（可选 `_rollup-*.md`） |
 
 编排层约定：
 - `manifests/skills/*.json` 的 `outputs` 写真实产物文件路径，例如 `docs/ai/requirements/requirements.v1.md`
-- `flow.json.steps[].outputs` 写编排层产物别名，例如 `requirements_doc`、`codegen_doc`
+- `flow.json.steps[].outputs` 写编排层产物别名，例如 `requirements_doc`、`codegen_doc`、`metrics_doc`
 - 建议由 CLI 在 `.ai/artifact-index.json` 中维护别名到真实文件路径的映射
 
 ---
