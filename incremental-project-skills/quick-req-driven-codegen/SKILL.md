@@ -1,6 +1,6 @@
 ---
 name: quick-req-driven-codegen
-description: "REQ 驱动编码：编码前必读 docs/ 下需求拆解(docs/prd)与技术方案(docs/design)、design/ 下设计数据(Figma/MasterGo/token)；三类物料须齐套且研发确认后方可编码；写代码前落盘执行计划(每 block 含目标文件/组件/字段/交互/证据)，缺落点 blocked；禁凭截图写 UI；稳定分层 types→api→state→leaf→page→route→tracking；结束后架构对齐报告，关键项 pass 才编译，missing 最多回流 5 轮否则 blocked。Actions: 执行计划, 架构对齐, 分层实现, token JSON, 子方案分任务, 物料门禁, 研发确认. Objects: REQ-xxx, docs/prd, docs/design, design/, 总方案/子方案, AGENTS.md. Stacks: Vue3, React, ZRN, TS. Triggers: 按拆解开发, 按方案写代码, 执行计划, 架构对齐报告, 禁止截图 UI, 分层实现, 研发确认, 物料齐套."
+description: "REQ 驱动编码：编码前必读 docs/(prd+design)与 design/ 设计数据；三类物料齐套且研发确认后方可编码；UI视图层：结构从 design/*.json 解析后编码，视觉以 design/*.png 为基准，交互由 docs/prd/ REQ+设计结构深度推理；写代码前落盘执行计划；稳定分层 types→api→state→leaf→page→route→tracking；架构对齐 pass 后 visual-audit→compile-verify。Triggers: 按拆解开发, 按方案写代码, UI还原, design json, 页面结构, 交互推理, 研发确认."
 argument-hint: "[stack] e.g. Vue3+Tailwind+TS | React+ZRN+TS | 写明 UI 框架、样式方案、语言"
 ---
 
@@ -8,7 +8,7 @@ argument-hint: "[stack] e.g. Vue3+Tailwind+TS | React+ZRN+TS | 写明 UI 框架�
 
 **语言**：交付说明、映射表、OPEN 项默认使用**中文**；保留 REQ-xxx、TC-xxx、OPEN-xxx、API 路径与代码标识符为原样英文。
 
-IRON LAW：**编码前须从 `docs/` 读取需求拆解与技术方案、从 `design/` 读取设计数据；三类物料须齐套且均经研发确认，否则整单 blocked。** **禁止在拆解、方案、测试用例、设计数据、项目规则未覆盖处发明业务规则、接口字段、UI 或交互。** **写代码前须有落盘的《执行计划》，且每个 ready block 具备目标文件、目标组件、数据字段、交互与证据；缺落点只能标 blocked，禁止硬写。** **禁止凭截图/主观目测写 UI**——须 `design/` 可解析 metadata 或已批准的 OPEN。**实现须按稳定层顺序**：types → api → state → leaf → page → route → tracking。**编译验证前须《架构对齐报告》关键项全部 pass**；missing 最多回流 5 轮，仍缺则 **blocked**。
+IRON LAW：**编码前须从 `docs/` 读取需求拆解与技术方案、从 `design/` 读取设计数据；三类物料须齐套且均经研发确认，否则整单 blocked。** **UI 视图层（leaf/page）：须先从 `design/*.json` 明确页面结构再编码；视觉还原以 `design/*.png` 为基准；交互须结合 `docs/prd/` REQ 与设计结构深度推理，禁止聊天截图或未落盘设计文件。** **禁止在拆解、方案、测试用例、设计数据、项目规则未覆盖处发明业务规则、接口字段、UI 或交互。** **写代码前须有落盘的《执行计划》，且每个 ready block 具备目标文件、目标组件、数据字段、交互与证据；缺落点只能标 blocked，禁止硬写。** **实现须按稳定层顺序**：types → api → state → leaf → page → route → tracking。**编译验证前须《架构对齐报告》关键项全部 pass**；missing 最多回流 5 轮，仍缺则 **blocked**。
 
 ## Workflow
 
@@ -18,7 +18,7 @@ REQ 驱动实现进度：
 - [ ] 步骤 1：输入物料清点 ⛔ BLOCKING
   - [ ] 1.1 **需求拆解**（`docs/prd/`）：路径、版本、REQ-xxx 列表、研发确认记录
   - [ ] 1.2 **技术方案**（`docs/design/`）：总方案 + 子方案；设计分块可识别；研发确认记录
-  - [ ] 1.3 **设计数据**（`design/`）：Figma / MasterGo / token JSON / manifest（非截图）
+  - [ ] 1.3 **设计数据**（`design/`）：`*.json`（结构）、`*.png`（视觉基准）、token/manifest
   - [ ] 1.4 **项目规则**：`AGENTS.md` / `AGENT.md` / `CLAUDE.md`（存在则必读）
   - [ ] 1.5 design token JSON 路径（UI 相关 REQ 时，通常在 `design/`）
   - [ ] 1.6 **技术栈**：UI 框架、样式方案、语言（未说明则先问）
@@ -35,7 +35,7 @@ REQ 驱动实现进度：
   - [ ] 加载 `references/architecture-and-task-split.md`；核对 PRD/方案/附录 F
 - [ ] 步骤 5：执行计划 ⛔ BLOCKING（真正写代码前）
   - [ ] 加载 `references/execution-plan.md`
-  - [ ] 按方案设计分块填 block 表；每 block：目标文件、组件、数据字段、交互、证据
+  - [ ] 按方案设计分块填 block 表；每 block：结构 JSON、视觉 PNG、目标文件、组件、数据字段、交互（REQ+设计结构）、证据
   - [ ] 缺落点 → block 标 blocked；**不得对 blocked block 编码**
   - [ ] 确认门：存在 blocked 且未缩小范围 → 停止
 - [ ] 步骤 6：契约与 token ⚠️ REQUIRED
@@ -44,6 +44,10 @@ REQ 驱动实现进度：
 - [ ] 步骤 7：分层实现 ⛔ BLOCKING
   - [ ] 加载 `references/implementation-layer-order.md`
   - [ ] 顺序：types.ts → api.ts → state/hooks → leaf → page → route/web → tracking/logging
+  - [ ] **进入 leaf/page 前**：加载 `references/ui-view-layer-implementation.md`
+  - [ ] 7.1 从 `design/*.json` 解析页面结构树；结构未明确 → blocked
+  - [ ] 7.2 视觉还原以配对 `design/*.png` 为基准
+  - [ ] 7.3 交互：`docs/prd/` REQ + 设计结构深度推理，落盘 block「交互」列
   - [ ] 仅实现执行计划中 status=ready 的 block
 - [ ] 步骤 8：编码追溯与确认门 ⚠️ REQUIRED
   - [ ] REQ 锚点；token 映射；大范围删除/契约冲突须用户确认
@@ -69,7 +73,7 @@ REQ 驱动实现进度：
 |------|------|------|
 | 需求拆解 | `docs/prd/` | `quick-requirement-decomposition` |
 | 技术方案 | `docs/design/` | `quick-tech-solution` |
-| 设计数据 | **`design/`** | Figma / MasterGo 导出、token JSON、manifest |
+| 设计数据 | **`design/`** | `*.json` 布局结构、`*.png` 视觉基准、token/manifest |
 | 项目规则 | 仓库根 | `AGENTS.md` / `AGENT.md` / `CLAUDE.md` |
 
 **禁止混淆** `docs/design/`（技术方案）与 `design/`（设计数据）。
@@ -88,7 +92,7 @@ REQ 驱动实现进度：
 
 步骤 6 沿用 design token 与栈 reference（见下表）。
 
-步骤 7 **稳定顺序**（`implementation-layer-order.md`）：
+步骤 7 **稳定顺序**（`implementation-layer-order.md`）；**leaf/page 须先过** `ui-view-layer-implementation.md`：
 
 1. `types.ts` — 类型与 DTO  
 2. `api.ts` — 请求与错误映射  
@@ -107,6 +111,7 @@ REQ 驱动实现进度：
 | 执行计划 | `execution-plan.md` |
 | 设计数据门禁 | `design-metadata-gate.md` |
 | 分层顺序 | `implementation-layer-order.md` |
+| UI 视图层（leaf/page） | `ui-view-layer-implementation.md` |
 | 对齐报告 | `architecture-alignment-report.md` |
 | 视觉回流 | 消费 `quick-visual-audit` 的 VA-xxx 清单，仅改清单列明 UI 项 |
 | UI 样式 | **必选** `design-tokens-json.md` |
@@ -148,7 +153,10 @@ REQ 驱动实现进度：
 - 混淆 `docs/design/` 与 `design/`
 - 物料未齐套或未研发确认却编码
 - 无执行计划或 block 缺「证据」却编码
-- 凭截图/聊天图片写 UI
+- 无 `design/*.json` 结构摘要却写 leaf/page
+- 无配对 `design/*.png` 却宣称 UI 还原
+- 交互未锚定 `docs/prd/` REQ 与设计节点
+- 用聊天截图/飞书图片代替 `design/` 真源
 - 跳层实现（先 page 后 types/api）
 - 无架构对齐报告就跑编译或 merge
 - missing 超过 5 轮仍标 pass
@@ -160,11 +168,13 @@ REQ 驱动实现进度：
 - [ ] `docs/prd/`、`docs/design/`、`design/` 路径已记录且已 Read
 - [ ] 三类物料均有研发确认记录或当次用户确认
 - [ ] 《执行计划》已落盘；ready block 字段完整
+- [ ] UI block：`design/*.json` 结构已解析、`*.png` 已绑定、交互列含 REQ 锚点
 - [ ] 实现顺序符合七层；无 blocked block 被静默实现
 - [ ] 《架构对齐报告》已落盘；关键项 pass 或已 blocked 并说明
 - [ ] 编译验证在视觉 pass 或 UI-N/A **之后**执行
 - [ ] 每 REQ 有追溯锚点；token 无未批准硬编码
 - [ ] 交付含：文件列表、REQ→代码、执行计划与报告路径、OPEN、**本次栈**
+- [ ] **观测可扫描**：架构对齐报告含「回流记录」与状态列（pass/missing/blocked），供 `quick-pipeline-observability` 计算首次完整度/回流轮次
 
 ## 与相邻技能的关系
 
@@ -173,3 +183,4 @@ REQ 驱动实现进度：
 - **quick-requirement-testcase-trace**：实现应对齐 TC 或说明 BLOCKED；对齐报告「待验证项」可引用 TC。
 - **quick-visual-audit**：步骤 10 UI 验收；产出 VA 偏差清单，本 skill 按清单回流修复。
 - **quick-compile-verify**：步骤 11；视觉 pass 或 UI-N/A 后执行。
+- **quick-pipeline-observability**：下游只读扫描本 skill 对齐报告等产物 → `docs/ai/metrics`。

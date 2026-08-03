@@ -10,7 +10,7 @@
 |------|--------|----------|------------|
 | **需求拆解** | `docs/` | `docs/prd/{需求名}-v{x.y}.md` | `quick-requirement-decomposition` |
 | **技术方案** | `docs/` | `docs/design/{需求名}-tech-solution-v{x.y}.md`；子方案 `{功能描述}-v{x.y}.md` | `quick-tech-solution` |
-| **设计数据** | `design/` | `design/{需求名}/` 下 Figma/MasterGo 导出、token JSON、manifest | 设计导出 / 团队约定 |
+| **设计数据** | `design/` | `design/{需求名}/*.json`（结构）、`*.png`（视觉）、token、manifest |
 
 **禁止混淆**：`docs/design/` 是**技术方案 Markdown**；**`design/`**（项目根）是**设计工具可解析数据**，二者不可互换。
 
@@ -18,7 +18,7 @@
 
 - [ ] 三类物料**均已 Read**；路径、版本号写入执行计划元数据
 - [ ] 拆解 REQ 列表与方案附录 A / 设计分块**版本一致**（同一 `{需求名}-v{x.y}` 链）
-- [ ] 方案每个 UI 相关设计分块，在 `design/` 有对应节点或 token 锚点（或已标 `UI-N/A` + OPEN）
+- [ ] 方案每个 UI 相关设计分块，在 `design/` 有配对 `*.json` + `*.png`（或已标 `UI-N/A` + OPEN）
 - [ ] 无散落聊天/飞书链接替代仓库内固定文件
 - [ ] OPEN / BLOCKED / TBD 已汇总；**未关闭 BLOCKED 且无用户确认** → 整单 blocked
 - [ ] 项目规则（`AGENTS.md` / `CLAUDE.md`）存在则已 Read
@@ -51,7 +51,7 @@
 ## 禁止
 
 - 跳过本门禁直接写业务代码
-- 仅有 PNG/JPG/聊天截图、无 `design/` 可解析数据却写 UI
+- 仅有 PNG 无 JSON、或仅有 JSON 无 PNG 却写 UI
 - 方案仍为草案/TBD 密集却按终稿编码
 - 用旧版拆解配新版方案（或反之）且无 OPEN 说明
 

@@ -154,6 +154,7 @@ Red Flags（出现则回到步骤 0）：
 - [ ] 《编译验证报告》已落盘（或用户只要口头结论时已给同等信息）
 - [ ] 无未解释的 `@ts-ignore` / 整文件 disable 新增
 - [ ] blocked 时未宣称 pass；OPEN 列表可交研发跟进
+- [ ] **观测可扫描**：编译验证报告若记录首跑失败类别（lint/tsc/build），可供 `quick-pipeline-observability` 汇总
 
 ## 与相邻技能的关系
 
@@ -161,3 +162,4 @@ Red Flags（出现则回到步骤 0）：
 - **quick-visual-audit**：UI 验收前置；视觉 pass 或 UI-N/A 后再执行本 skill；本 skill 不处理视觉偏差。
 - **quick-arch-security-code-review**：下游；编译 pass 后建议做 CR，但 CR 不替代编译验证。
 - **quick-tech-solution**：契约/字段争议以方案为准；decision-blocked 时引用方案章节。
+- **quick-pipeline-observability**：下游只读扫描验证报告 → metrics。

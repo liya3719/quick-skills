@@ -1,0 +1,20 @@
+{
+  "name": "quick.pipeline-observability",
+  "type": "skill",
+  "version": "1.0.0",
+  "description": "增量流水线观测：只读扫描拆解/方案/对齐/用例/VA 等产物，产出 docs/ai/metrics JSON+报告与可选 rollup；无埋点平台",
+  "sourceDir": "incremental-project-skills/quick-pipeline-observability",
+  "entry": "SKILL.md",
+  "applicableTemplates": ["Vue3Admin", "Vue3Mobile", "ReactAdmin", "ReactMobile", "Component", "Electron"],
+  "inputs": [
+    "requirements_doc",
+    "solution_doc",
+    "codegen_doc",
+    "testcase_doc",
+    "visual_audit_doc"
+  ],
+  "outputs": [
+    "docs/ai/metrics/{name}-metrics-v{x.y}.json",
+    "docs/ai/metrics/{name}-metrics-v{x.y}.md"
+  ]
+}

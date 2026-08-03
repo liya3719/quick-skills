@@ -26,7 +26,7 @@
 ## 不可自动判 pass
 
 - metadata 与 token JSON 冲突 → OPEN-设计
-- 方案未定义的状态却 metadata 有 → decision OPEN
+- 方案未定义的状态却 JSON 有 → decision OPEN
 - 用户未确认的 UI-N/A block
 
 ## 禁止

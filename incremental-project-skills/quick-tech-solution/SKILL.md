@@ -178,3 +178,4 @@ Ask：
 ### 语言
 
 - [ ] 正文主体为 **中文**；标识符、API 路径、错误码保持与代码一致的原样拼写
+- [ ] **观测可扫描**：确认门列出本方案覆盖 REQ 数；附录 A/D 标题可被 `quick-pipeline-observability` 解析（见其 metric-dictionary 别名）

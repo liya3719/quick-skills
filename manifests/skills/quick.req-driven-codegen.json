@@ -1,8 +1,8 @@
 {
   "name": "quick.req-driven-codegen",
   "type": "skill",
-  "version": "2.1.0",
-  "description": "REQ 驱动编码：编码前必读 docs/(prd+design) 与 design/ 设计数据；三类物料齐套且研发确认后方可编码；执行计划+分层实现+架构对齐报告；pass 后交 quick-compile-verify",
+  "version": "2.2.0",
+  "description": "REQ 驱动编码：docs/(prd+design)+design/ 齐套且研发确认；UI视图层 JSON定结构、PNG定视觉、PRD+设计结构定交互；执行计划+七层实现+架构对齐→visual-audit→compile-verify",
   "sourceDir": "incremental-project-skills/quick-req-driven-codegen",
   "entry": "SKILL.md",
   "applicableTemplates": ["Vue3Admin", "Vue3Mobile", "ReactAdmin", "ReactMobile", "Component", "Electron"],

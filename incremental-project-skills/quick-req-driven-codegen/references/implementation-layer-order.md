@@ -13,8 +13,8 @@
 | 1 **types** | `types.ts`、接口/枚举/DTO | 与方案契约一致；REQ 注释或映射 |
 | 2 **api** | `api.ts`、请求封装、错误码映射 | 负载形状与方案一致 |
 | 3 **state** | hooks、store、state 模块 | 数据流与方案状态机一致 |
-| 4 **leaf** | 子组件、纯展示/交互单元 | 消费 token/metadata；禁截图臆造 |
-| 5 **page** | 页面容器、布局编排 | 组装 leaf + state |
+| 4 **leaf** | 子组件、纯展示/交互单元 | **先** `ui-view-layer-implementation.md`：JSON 结构 → PNG 视觉 |
+| 5 **page** | 页面容器、布局编排 | 组装 leaf + state；对照 PNG 基准 |
 | 6 **route** | 路由表、Web 注册、深链 | 与方案路由/平台一致 |
 | 7 **tracking** | 埋点、日志、可观测 | 与方案埋点关键词一致 |
 

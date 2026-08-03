@@ -15,6 +15,7 @@
 | 🔧 验证 | [`quick-compile-verify`](./quick-compile-verify/SKILL.md) | 编译验证 | lint / tsc / build / 多平台 bundle；失败定位修复 |
 | 🧪 测试 | [`quick-requirement-testcase-trace`](./quick-requirement-testcase-trace/SKILL.md) | 需求追溯测试用例 | 生成功能 / 异常 / 边界三层用例，输出至 **`docs/testcase/`**，每条 TC 追溯到 REQ-xxx |
 | 🔍 审查 | [`quick-arch-security-code-review`](./quick-arch-security-code-review/SKILL.md) | 架构与安全代码审查 | 覆盖 SOLID、XSS/CORS/SQLi、鉴权越权、死代码、性能热路径的深度 Code Review |
+| 📊 观测 | [`quick-pipeline-observability`](./quick-pipeline-observability/SKILL.md) | 流水线观测 | 只读扫描各阶段产物，产出 `docs/ai/metrics` 指标 JSON/报告与 rollup；无埋点平台 |
 
 ---
 
@@ -42,9 +43,12 @@ quick-compile-verify              ← lint / tsc / build / bundle
       │
       ▼
 quick-arch-security-code-review   ← PR / 合并前，对产出代码做架构与安全审查
+      │
+      ▼
+quick-pipeline-observability      ← 只读扫描上述产物 → docs/ai/metrics（可选末步）
 ```
 
-> **关键约定**：每个 Skill 消费上游产物作为**唯一真源**，禁止跨 Skill 发明业务规则或接口字段。
+> **关键约定**：每个 Skill 消费上游产物作为**唯一真源**，禁止跨 Skill 发明业务规则或接口字段。观测 skill **不改写**上游产物。
 
 ---
 

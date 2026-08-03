@@ -5,7 +5,7 @@
   "defaultScope": "project",
   "presets": {
     "ai-coding-full-flow": {
-      "description": "AI Coding 全流程：需求拆解 → 技术方案 → 编码 → 视觉审计 → 编译验证 → 测试用例 → 架构安全审查",
+      "description": "AI Coding 全流程：需求拆解 → 技术方案 → 编码 → 视觉审计 → 编译验证 → 测试用例 → 架构安全审查 → 流水线观测",
       "skills": [
         "quick.requirement-decomposition",
         "quick.tech-solution",
@@ -13,7 +13,8 @@
         "quick.visual-audit",
         "quick.compile-verify",
         "quick.requirement-testcase-trace",
-        "quick.arch-security-code-review"
+        "quick.arch-security-code-review",
+        "quick.pipeline-observability"
       ],
       "docs": [
         {
@@ -28,7 +29,8 @@
         "docs/testcase",
         "docs/ai/visual-audit",
         "docs/ai/compile-verify",
-        "docs/ai/review"
+        "docs/ai/review",
+        "docs/ai/metrics"
       ]
     }
   },
@@ -87,6 +89,14 @@
         "cursor": "quick-arch-security-code-review",
         "claude": "quick-arch-security-code-review",
         "agents": "quick-arch-security-code-review"
+      }
+    },
+    "quick.pipeline-observability": {
+      "sourceDir": "incremental-project-skills/quick-pipeline-observability",
+      "dirNameByPlatform": {
+        "cursor": "quick-pipeline-observability",
+        "claude": "quick-pipeline-observability",
+        "agents": "quick-pipeline-observability"
       }
     },
     "quick.module-refactor": {

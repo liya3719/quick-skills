@@ -22,8 +22,8 @@
 | **目标文件** | 将创建/修改的路径 |
 | **目标组件** | 组件/模块/符号名 |
 | **数据字段** | props/state/API 字段与类型来源（方案锚点） |
-| **交互** | 事件、跳转、校验、错误展示（方案或 metadata 锚点） |
-| **证据** | 方案 § / metadata 节点 id / token 名 |
+| **交互** | 事件、跳转、校验、态切换；**须** `docs/prd/` REQ + JSON 节点 id 锚点 |
+| **证据** | 方案 § / JSON 节点 id / `design/*.png` 文件名 / token 名 |
 
 ## 落盘路径
 
@@ -41,10 +41,10 @@
 - 项目规则：AGENTS.md | CLAUDE.md
 
 ## Block 表
-| block id | REQ | 目标文件 | 目标组件 | 数据字段 | 交互 | 证据 | 状态 |
-|----------|-----|----------|----------|----------|------|------|------|
-| B-01 | REQ-001 | src/... | FooCard | name, status | onClick→详情 | 方案§4.2; figma:node/12 | ready |
-| B-02 | REQ-002 | … | … | … | … | … | blocked（缺 metadata 节点） |
+| block id | REQ | 目标文件 | 目标组件 | 结构 JSON | 视觉 PNG | 数据字段 | 交互 | 证据 | 状态 |
+|----------|-----|----------|----------|-----------|----------|----------|------|------|------|
+| B-01 | REQ-001 | src/... | FooCard | design/home.json#node/12 | design/home.png | name, status | click→详情 REQ-003 | 方案§4.2; node/12 | ready |
+| B-02 | REQ-002 | … | … | … | … | … | … | … | blocked（缺 PNG） |
 
 ## 实现层顺序（全 block 共享）
 types → api → state → leaf → page → route → tracking

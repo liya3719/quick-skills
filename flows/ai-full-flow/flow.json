@@ -12,6 +12,7 @@
     { "id": "visual-audit", "skill": "quick.visual-audit", "requires": ["req-driven-codegen"], "optional": true, "outputs": ["visual_audit_doc"] },
     { "id": "compile-verify", "skill": "quick.compile-verify", "requires": ["req-driven-codegen"], "outputs": ["compile_verify_doc"] },
     { "id": "requirement-testcase-trace", "skill": "quick.requirement-testcase-trace", "requires": ["tech-solution"], "optional": true, "outputs": ["testcase_doc"] },
-    { "id": "arch-security-code-review", "skill": "quick.arch-security-code-review", "requires": ["compile-verify"], "outputs": ["review_doc"] }
+    { "id": "arch-security-code-review", "skill": "quick.arch-security-code-review", "requires": ["compile-verify"], "outputs": ["review_doc"] },
+    { "id": "pipeline-observability", "skill": "quick.pipeline-observability", "requires": ["requirement-decomposition"], "optional": true, "outputs": ["metrics_doc"] }
   ]
 }
